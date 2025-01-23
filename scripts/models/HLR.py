@@ -69,21 +69,6 @@ class SpacedRepetitionModel(object):
         for inst in trainset:
             self.train_update(inst)
 
-
-    def evaluate(self, testset):
-        total_slp, total_slh = 0, 0
-        results = {'p': [], 'h': [], 'pp': [], 'hh': [], 'slp': [], 'slh': []}
-        for instance in testset:
-            p_pred, h_pred = self.predict(instance['fv'], instance['delta_t'])
-            slp = (instance['p'] - p_pred) ** 2
-            slh = (compute_half_life(instance['p'], instance['delta_t']) - h_pred) ** 2
-            total_slp += slp
-            total_slh += slh
-        print(f"SLP Loss: {total_slp}, SLH Loss: {total_slh}")
-        
-
-            
-
     def losses(self, inst):
         p, h = self.predict(inst)
         slp = (inst.p - p)**2
