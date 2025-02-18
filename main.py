@@ -1,17 +1,32 @@
-from scripts.preprocess import load_data, clean_data
-from scripts.feature_engineering import compute_word_complexity, generate_user_embeddings
-from scripts.models import train_model, evaluate_model
+from scripts.raw_data_processor import RawDataProcessor
+from scripts.file_storage import FileStorage
+from scripts.feature_extraction.user_features import UserFeatures
+from scripts.feature_extraction.language_features import LanguageFeatures
+from scripts.models.HLR import HalfLifeRegression
+from scripts.models.LR import LinearRegression
+from scripts.prepare_dataset import PrepareDataset
 
 def main():
-    raw_data = load_data()
-    clean_df = clean_data(raw_data)
     
-    features = compute_word_complexity(clean_df)
-    embeddings = generate_user_embeddings(clean_df)
-    
-    model = train_model(features, target="p_recall")
-    results = evaluate_model(model, test_data)
-    print(results)
+    RawDataProcessor.process_data('13 million Duolingo student learning traces.csv', 'raw', 
+                                  'df_processed.csv', 'processed' )
+    data = FileStorage.read_data('df_processed.csv', 'processed')
+
+    UserFeatures.generate_user_features(data)
+    LanguageFeatures.generate_language_features(data)
+
+    input_df = PrepareDataset.concat_datasets(processed_df, user_features, language_features)
+    trainset, testset =  PrepareDataset.create_instances_from_dataframe(input_df)
+
+    hlr_model = HalfLifeRegression()
+    hlr_model.train(trainset)
+    hlr_results = hlr_model.evaluate(testset)
+
+    lr_model = LinearRegression()
+    lr_model.train()
+    lr_results = lr_model.evaluate
+
+    print(hlr_results)
 
 if __name__ == "__main__":
     main()
