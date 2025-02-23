@@ -1,8 +1,6 @@
-from scripts.raw_data_processor import LoadDataset
 from scripts.file_storage import FileStorage
 import pandas as pd
 import numpy as np
-import os
 import re
 
 class LanguageFeatures:
@@ -77,4 +75,4 @@ class LanguageFeatures:
         self.remove_sf()
         self.add_word_len()
         self.add_subtlex()
-        FileStorage.save_data('language_features.csv', 'features', self.df)
+        FileStorage().save_data('language_features.csv', 'features_test', self.df)

@@ -31,4 +31,4 @@ class UserFeatures:
         self.df.drop(columns=['p_recall', 'timestamp', 'delta', 'lexeme_id', 'history_seen',
                        'history_correct', 'session_seen', 'session_correct', 'ui_language', 'learning_language'], inplace=True)
         
-        FileStorage.save_data('user_features.csv', 'features', self.df)
+        FileStorage().save_data('user_features.csv', 'features_test', self.df)

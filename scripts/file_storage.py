@@ -3,10 +3,10 @@ import pandas as pd
 
 class FileStorage:
     def __init__(self):
-        self.current_dir = os.getcw()
+        self.current_dir = os.getcwd()
 
     def read_data(self, filename, folder, sep=',', names=None):
-        filepath = os.path.normpath(os.path.join(self.current_dir, f'../data/{folder}/', filename))
+        filepath = os.path.normpath(os.path.join(self.current_dir, f'data/{folder}/', filename))
 
         chunk_size = 10000
         chunks = []
@@ -21,7 +21,7 @@ class FileStorage:
         return df
     
     def read_subtlex_files(self, folder):
-        subtlex_path = os.path.normpath(os.path.join(self.current_dir, f'../data/{folder}'))
+        subtlex_path = os.path.normpath(os.path.join(self.current_dir, f'data/{folder}'))
 
         dfs = []
         for filename in os.listdir(subtlex_path): 
@@ -36,5 +36,5 @@ class FileStorage:
         return subtlex_df
     
     def save_data(self, filename, folder, df):
-        filepath = os.path.normpath(os.path.join(self.current_dir, f'../data/{folder}/'))
+        filepath = os.path.normpath(os.path.join(self.current_dir, f'data/{folder}/'))
         df.to_csv(os.path.join(filepath, filename), sep=',', index=False, header=True)

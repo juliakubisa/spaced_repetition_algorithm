@@ -163,5 +163,6 @@ data/
 .DS_Store
 .reports/duolingo_EDA.html
 
+my_env/
 
 
