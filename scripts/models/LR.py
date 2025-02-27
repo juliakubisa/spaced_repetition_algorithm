@@ -39,23 +39,10 @@ class LinearRegression(Model):
         super().evaluate(LinearRegression.__name__, y_train_pred, y_test_pred)
 
         if include_importance:
-            importances_list = []  
             model = self.pipeline.named_steps["model"]
-            importances_list.append((self.X_train.columns, model.coef_))
-
-            importance_df = pd.DataFrame(importances_list, columns = ['Feature', 'Importance'])
-
-            importance_df = importance_df.explode(["Feature", "Importance"]).reset_index(drop=True)
-            tags_importance = importance_df[importance_df['Feature'].str.contains("tags_list_")].copy()
-
-            overall_tags_importance = tags_importance['Importance'].abs().sum()
-
-            importance_df.loc[-1] = ['Linear Regression', 'tags_list (overall)', overall_tags_importance]
-            importance_df.index = importance_df.index + 1 
-
-            importance_df['Absolute_Val'] = importance_df['Importance'].abs()
-            importance_df = importance_df.sort_values(by='Absolute_Val', ascending=False)
-            print(f'Importance: {importance_df[:10]}')
+            coefficients_df = pd.DataFrame({'Feature': self.X_train.columns, 'Coefficient': model.coef_})
+            importance_df = importance_df.sort_values(by='Coefficient', ascending=False)
+            print(f'Coefficients: {coefficients_df[:10]}')
 
     def prepare_model(self, transform_variables_method):
         self.drop_features(self.cols_to_drop)
