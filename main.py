@@ -20,9 +20,11 @@ def main():
     y_train_pred, y_test_pred = linear_regression.predict()
     linear_regression.evaluate(y_train_pred, y_test_pred, include_importance=False)
     linear_regression.residuals_histogram(y_test_pred)
-    linear_regression.predictions_scatterplot(y_test_pred)
+    linear_regression.plot_scatterplot(y_test_pred)
 
-    neural_network = NeuralNetwork(data, user_data, language_data, 0.4)
+    neural_network = NeuralNetwork(data, user_data, language_data, 0.4, 'N-HLR')
+    neural_network.configure()
+    
 
     # input_df = PrepareDataset.concat_datasets(processed_df, user_features, language_features)
     # trainset, testset =  PrepareDataset.create_instances_from_dataframe(input_df)

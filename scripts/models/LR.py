@@ -19,14 +19,6 @@ class LinearRegression(Model):
 
         Model.__init__(df_processed, df_lang_features, df_user_features, sample_frac)
 
-    def ohe(self):
-        categorical_cols = self.df.select_dtypes(include=['object']).columns.tolist()
-        ohe = OneHotEncoder(sparse_output=False)
-        ohe_data = ohe.fit_transform(self.df[categorical_cols])
-        ohe_df = pd.DataFrame(ohe_data, columns=ohe.get_feature_names_out(categorical_cols))
-        self.df = pd.concat([self.df.select_dtypes(exclude='O'), ohe_df], axis=1)
-        self.df.dropna(inplace=True)
-
     def predict(self):        
         self.pipeline.fit(self.X_train, self.y_train)
 
@@ -50,4 +42,4 @@ class LinearRegression(Model):
         self.transform_variables(self.skewed_cols_to_transform, transform_variables_method)
         self.tags_threshold(1000)
         self.ohe()
-        self.split_dataset()
+        self.split_dataset('p_recall')
